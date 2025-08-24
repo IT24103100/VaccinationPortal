@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Person</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-4">
+    <h1>Edit Person</h1>
+    <hr>
+    <form th:action="@{/web/persons/update/{id}(id=${person.id})}" th:object="${person}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Person Name</label>
+            <input type="text" th:field="*{name}" id="name" class="form-control" placeholder="Enter name">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Person Email</label>
+            <input type="email" th:field="*{email}" id="email" class="form-control" placeholder="Enter email">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Person</button>
+        <a th:href="@{/web/persons}" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>
+</body>
+</html>
