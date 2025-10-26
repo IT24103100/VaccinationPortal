@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/nurse-layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Add Vaccination Record</title>
+</head>
+<body>
+<div th:fragment="content">
+
+        <!-- Page Header: search for patients to add records -->
+        <header class="mb-10 text-center animate-fade-in">
+            <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                Add Vaccination Record
+            </h1>
+            <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500">
+                Search for patients by their NIC to add new vaccination records.
+            </p>
+        </header>
+
+        <!-- Alert Messages: success and error banners -->
+        <div class="max-w-3xl mx-auto mb-6">
+            <div th:if="${successMessage}" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
+                 class="success-message flex justify-between items-center animate-fade-in">
+                <span th:text="${successMessage}"></span>
+                <button @click="show = false" class="text-white">&times;</button>
+            </div>
+            <div th:if="${errorMessage}" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
+                 class="error-message flex justify-between items-center animate-fade-in">
+                <span th:text="${errorMessage}"></span>
+                <button @click="show = false" class="text-white">&times;</button>
+            </div>
+        </div>
+
+        <!-- Search Patient Card: NIC input and search button -->
+        <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8 mb-10 animate-slide-in-left card-hover">
+            <div class="flex items-center mb-6">
+                <svg class="w-8 h-8 text-primary-blue mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <h2 class="text-2xl font-bold text-gray-800">Search Patient</h2>
+            </div>
+
+            <!-- Search Form -->
+            <form th:action="@{/nurse/add-record}" method="get" class="flex items-center space-x-4">
+                <div class="flex-grow">
+                    <label for="nic" class="sr-only">Search by NIC</label>
+                    <input type="text" id="nic" name="nic"
+                           class="w-full px-5 py-3 text-lg text-gray-700 bg-gray-100 border-2 border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition"
+                           placeholder="Enter patient's NIC number..." th:value="${param.nic}" />
+                </div>
+                <button type="submit"
+                        class="btn-gradient text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    Search
+                </button>
+            </form>
+        </div>
+
+        <!-- Search Results -->
+        <div class="max-w-5xl mx-auto animate-fade-in">
+            <!-- Search Error Message -->
+            <div th:if="${searchError}" class="warning-message text-center" th:text="${searchError}"></div>
+
+            <!-- Patient List Table -->
+            <div th:if="${patientList != null and not patientList.isEmpty()}"
+                 class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800">Search Results</h3>
+                </div>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIC</th>
+                        <th scope="col" class="relative px-6 py-3">
+                            <span class="sr-only">Action</span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tr th:each="patient : ${patientList}" class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${patient.name}"></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${patient.nic}"></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a th:href="@{/nurse/add-record/{id}(id=${patient.id})}"
+                               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-blue hover:bg-primary-blue-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                Add Record
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- No Results Message -->
+            <div th:if="${patientList != null and patientList.isEmpty() and #strings.isEmpty(searchError)}"
+                 class="info-message text-center">
+                No patients found in the system.
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+</body>
+</html>

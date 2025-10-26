@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/nurse-layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Edit My Profile</title>
+</head>
+<body>
+<div th:fragment="content">
+
+    <!-- Page Header -->
+    <header class="mb-10 text-center">
+        <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            Edit My Profile
+        </h1>
+        <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500">
+            Update your personal information below.
+        </p>
+    </header>
+
+    <!-- Edit Form Card -->
+    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+        <form th:action="@{/nurse/profile/update}" th:object="${user}" method="post" class="px-8 py-6">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{email}" />
+            <input type="hidden" th:field="*{nic}" />
+
+            <div class="space-y-6">
+                <!-- Full Name -->
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input type="text" id="name" th:field="*{name}" required
+                           class="mt-1 block w-full px-4 py-3 text-gray-700 bg-gray-100 border-2 border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition" />
+                </div>
+
+                <!-- Phone Number -->
+                <div>
+                    <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <input type="tel" id="phoneNumber" th:field="*{phoneNumber}"
+                           class="mt-1 block w-full px-4 py-3 text-gray-700 bg-gray-100 border-2 border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition" />
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                    <textarea id="address" th:field="*{address}" rows="3"
+                              class="mt-1 block w-full px-4 py-3 text-gray-700 bg-gray-100 border-2 border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition"></textarea>
+                </div>
+
+                <!-- Two-column grid for Postal Code and Birthday -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="postalCode" class="block text-sm font-medium text-gray-700">Postal Code</label>
+                        <input type="text" id="postalCode" th:field="*{postalCode}"
+                               class="mt-1 block w-full px-4 py-3 text-gray-700 bg-gray-100 border-2 border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition" />
+                    </div>
+                    <div>
+                        <label for="birthday" class="block text-sm font-medium text-gray-700">Birthday</label>
+                        <input type="date" id="birthday" th:field="*{birthday}"
+                               class="mt-1 block w-full px-4 py-3 text-gray-700 bg-gray-100 border-2 border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="mt-8 pt-6 border-t border-gray-200 flex justify-end space-x-4">
+                <a th:href="@{/nurse/profile}"
+                   class="bg-white py-2 px-5 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
+                    Cancel
+                </a>
+                <button type="submit"
+                        class="btn-gradient text-white font-bold py-2 px-5 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

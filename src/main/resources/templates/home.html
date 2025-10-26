@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::content})}">
+
+<head>
+    <title>VaxConnect Sri Lanka - Vaccination Portal</title>
+    <meta name="description" content="Sri Lanka's premier vaccination management portal. Book appointments, track records, and stay healthy with VaxConnect.">
+</head>
+
+<body>
+
+<!-- Main Content -->
+<div th:fragment="content">
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center pt-16" style="background-color: #86b1f1;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="space-y-8">
+                    <!-- Trust Badge -->
+                    <div class="inline-flex items-center bg-blue-50 text-primary-blue border border-primary-blue px-4 py-2 rounded-full text-sm font-medium">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        Trusted Healthcare Portal
+                    </div>
+                    
+                    <!-- Main Headline -->
+                    <div class="space-y-4">
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight">
+                            Your Health <br>
+                            <span class="text-primary-blue">Protector</span>
+                        </h1>
+                        <p class="text-lg text-gray-600 leading-relaxed max-w-lg">
+                            Schedule vaccinations, track your immunization records, and stay protected with VaxConnect - the trusted vaccination portal for individuals and families.
+                        </p>
+                    </div>
+                    
+                    <!-- Call to Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4" sec:authorize="isAnonymous()">
+                        <a th:href="@{/login}" class="bg-primary-blue hover:bg-primary-blue-dark text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl inline-flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            Book Appointment
+                        </a>
+                        <a th:href="@{/login}" class="bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg inline-flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            View Vaccine Info
+                        </a>
+                    </div>
+                    
+                    <!-- Action buttons for logged-in users -->
+                    <div class="flex flex-col sm:flex-row gap-4" sec:authorize="isAuthenticated()">
+                        <a th:href="@{/appointment/new}" class="bg-primary-blue hover:bg-primary-blue-dark text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl inline-flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            Book Appointment
+                        </a>
+                        <a th:href="@{/review}" class="bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg inline-flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                            </svg>
+                            Leave Review
+                        </a>
+        </div>
+    </div>
+                
+                <!-- Right Image -->
+                <div class="relative">
+                    <div class="relative z-10">
+                        <img src="/images/heroimg.jpg"
+                             class="w-full h-auto rounded-2xl shadow-2xl" alt="Vaccination Services"
+                             onerror="console.log('Image failed to load:', this.src); this.src='https://img.freepik.com/free-vector/medical-vaccination-concept-illustration_114360-8964.jpg';">
+            </div>
+                    <!-- Decorative elements -->
+                    <div class="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-primary-blue to-secondary-green rounded-full opacity-20"></div>
+                    <div class="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-tr from-secondary-green to-primary-blue rounded-full opacity-20"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Our Services</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Comprehensive vaccination management solutions designed to keep you and your family healthy
+                </p>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary-blue to-secondary-green mx-auto mt-6 rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-primary-blue to-primary-blue-dark rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                        </svg>
+                </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Vaccination Management</h3>
+                    <p class="text-gray-600 leading-relaxed">Comprehensive vaccination tracking and management system. Keep your immunization records organized and easily accessible whenever you need them.</p>
+            </div>
+
+                <!-- Service Card 2 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-secondary-green to-primary-blue rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Easy Appointment Booking</h3>
+                    <p class="text-gray-600 leading-relaxed">Book your vaccination appointments with ease. Choose from available hospitals, select convenient dates and times, and get instant confirmation.</p>
+            </div>
+
+                <!-- Service Card 3 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-primary-blue-dark to-secondary-green rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+        </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Secure & Private</h3>
+                    <p class="text-gray-600 leading-relaxed">Your health data is protected with enterprise-grade security. We ensure complete privacy and confidentiality of your vaccination records.</p>
+    </div>
+
+                <!-- Service Card 4 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-secondary-green to-primary-blue-dark rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Health Monitoring</h3>
+                    <p class="text-gray-600 leading-relaxed">Track your vaccination history and get reminders for upcoming doses. Stay on top of your immunization schedule effortlessly.</p>
+                </div>
+
+                <!-- Service Card 5 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-primary-blue to-secondary-green rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+            </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Hospital Network</h3>
+                    <p class="text-gray-600 leading-relaxed">Access to a wide network of certified hospitals and healthcare centers across Sri Lanka for your vaccination needs.</p>
+                </div>
+
+                <!-- Service Card 6 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="w-16 h-16 bg-gradient-to-br from-secondary-green to-primary-blue rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                        </svg>
+            </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Health Updates</h3>
+                    <p class="text-gray-600 leading-relaxed">Stay informed with the latest health news, vaccination schedules, and important updates from the Ministry of Health.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">About VaxConnect Sri Lanka</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary-blue to-secondary-green mx-auto mb-8 rounded-full"></div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto text-center space-y-6">
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    VaxConnect Sri Lanka is a comprehensive vaccination management platform developed in partnership with the Ministry of Health. 
+                    Our mission is to make vaccination accessible, trackable, and secure for all Sri Lankan citizens.
+                </p>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    We believe that every individual deserves easy access to vaccination services and the ability to maintain their health records 
+                    in a secure, digital format. Our platform connects patients with healthcare providers, streamlines the vaccination process, 
+                    and ensures that everyone stays protected against preventable diseases.
+                </p>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-primary-blue to-primary-blue-dark rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-3xl font-bold text-primary-blue mb-2">500K+</h4>
+                        <p class="text-gray-600">Registered Users</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-secondary-green to-primary-blue rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-3xl font-bold text-secondary-green mb-2">200+</h4>
+                        <p class="text-gray-600">Partner Hospitals</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-primary-blue-dark to-secondary-green rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-3xl font-bold text-primary-blue-dark mb-2">99.9%</h4>
+                        <p class="text-gray-600">Uptime Guarantee</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Get in Touch</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary-blue to-secondary-green mx-auto mb-8 rounded-full"></div>
+            </div>
+            
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-4">Need Help or Have Questions?</h4>
+                    <p class="text-gray-600 mb-8">
+                        Our support team is here to help you with any questions or concerns about the vaccination portal.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-primary-blue rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h6 class="font-semibold text-gray-800">Email Support</h6>
+                                <a href="mailto:support@vaxconnect.lk" class="text-primary-blue hover:text-primary-blue-dark transition-colors">support@vaxconnect.lk</a>
+            </div>
+        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-secondary-green rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h6 class="font-semibold text-gray-800">Phone Support</h6>
+                                <a href="tel:+94111234567" class="text-primary-blue hover:text-primary-blue-dark transition-colors">011-1234567</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Latest Reviews Section -->
+            <div class="mt-16" th:if="${!latestReviews.isEmpty()}">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-12">What Our Users Say</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-2xl p-6 shadow-lg border-l-4 border-primary-blue" th:each="review : ${latestReviews}">
+                        <div class="flex items-center mb-4">
+                            <div class="flex">
+                                <!-- Filled stars (yellow) -->
+                                <svg th:each="i : ${#numbers.sequence(1, review.rating)}" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                                <!-- Empty stars (gray) - only show if rating < 5 -->
+                                <svg th:if="${review.rating < 5}" th:each="i : ${#numbers.sequence(1, 5 - review.rating)}" class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <!-- Speech Bubble Comment Box -->
+                        <div class="speech-bubble relative mb-4 rounded-xl border border-gray-300 bg-white p-4 shadow-md">
+                            <p class="text-gray-800" th:text="${review.comment}"></p>
+                        </div>
+
+                        <!-- Add this style block at the bottom of your file, just before the </body> tag -->
+                        <style>
+                            .speech-bubble::after, .speech-bubble::before {
+                                content: '';
+                                position: absolute;
+                                bottom: -1px; /* Adjust to align with the bottom border */
+                                left: 20px;
+                                border-style: solid;
+                            }
+
+                            /* This creates the white triangle (the fill) */
+                            .speech-bubble::after {
+                                border-width: 10px;
+                                border-color: white transparent transparent transparent;
+                                bottom: -19px;
+                            }
+
+                            /* This creates the gray triangle (the border) behind the white one */
+                            .speech-bubble::before {
+                                border-width: 11px;
+                                border-color: #d1d5db transparent transparent transparent; /* Should match your border-gray-300 */
+                                bottom: -22px;
+                            }
+                        </style>
+                        <p class="text-gray-600 mb-4">
+                            <span class="italic">Category: </span>
+                            <span class="not-italic font-semibold" th:text="${review.category}"></span>
+                        </p>
+                        <p class=" rounded-md bg-gray-600/75 px-3 py-1 font-semibold text-white" th:text="${review.user.name}"></p>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Frequently Asked Questions</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary-blue to-secondary-green mx-auto mb-8 rounded-full"></div>
+            </div>
+            
+            <div class="space-y-4" x-data="{ openFaq: 1 }">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <button @click="openFaq = openFaq === 1 ? null : 1" class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="font-semibold text-gray-800">How do I book a vaccination appointment?</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform" :class="{ 'rotate-180': openFaq === 1 }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 1" x-transition class="px-6 pb-4 text-gray-600">
+                        Simply register for an account, log in, and click on "Book Appointment" from your dashboard. 
+                        You can then select your preferred hospital, choose an available date and time, and confirm your booking.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <button @click="openFaq = openFaq === 2 ? null : 2" class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span class="font-semibold text-gray-800">How can I view my vaccination records?</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform" :class="{ 'rotate-180': openFaq === 2 }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                        </button>
+                    <div x-show="openFaq === 2" x-transition class="px-6 pb-4 text-gray-600">
+                        After logging into your account, click on your profile menu and select "My Profile". 
+                        You'll find all your vaccination records organized by date, including the type of vaccine and the administering hospital.
+                        </div>
+                    </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <button @click="openFaq = openFaq === 3 ? null : 3" class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                            <span class="font-semibold text-gray-800">Is my personal information secure?</span>
+                </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform" :class="{ 'rotate-180': openFaq === 3 }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                        </button>
+                    <div x-show="openFaq === 3" x-transition class="px-6 pb-4 text-gray-600">
+                        Absolutely! We use enterprise-grade encryption and security measures to protect your data. 
+                        Your personal and health information is stored securely and is only accessible to authorized healthcare professionals.
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+        <!-- Success Messages -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div th:if="${successMessage}" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4" th:text="${successMessage}"></div>
+        <div th:if="${reviewSuccess}" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4" th:text="${reviewSuccess}"></div>
+        </div>
+
+</div>
+
+<!-- Scroll Animation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fade-in');
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements for animation
+    document.querySelectorAll('.service-card, .review-card').forEach(el => {
+        observer.observe(el);
+    });
+});
+</script>
+
+</body>
+</html>
