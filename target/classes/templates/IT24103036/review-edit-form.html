@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::content})}">
+
+<head>
+    <title>Edit Review - VaxConnect Sri Lanka</title>
+</head>
+
+<body>
+<div th:fragment="content" class="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 py-10 px-4 sm:px-6 lg:px-8">
+    <!-- Page Header -->
+    <div class="max-w-4xl mx-auto mb-8">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                <br>
+                <svg class="w-10 h-10 inline mr-3 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                <br>
+                Edit Your Review
+            </h1>
+            <p class="text-gray-600 text-lg">Update your feedback and rating about our vaccination portal</p>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div th:if="${successMessage}" class="max-w-2xl mx-auto mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800">
+        <div class="flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span th:text="${successMessage}"></span>
+        </div>
+    </div>
+
+    <div th:if="${errorMessage}" class="max-w-2xl mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">
+        <div class="flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            <span th:text="${errorMessage}"></span>
+        </div>
+    </div>
+
+    <!-- Edit Review Form -->
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-orange-500 to-orange-600">
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-white mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                    <h3 class="text-lg font-semibold text-white">Update Your Review</h3>
+                </div>
+            </div>
+            <div class="p-8">
+                <p class="text-gray-600 mb-6">Modify your rating and comments to better reflect your experience.</p>
+
+                <form th:action="@{/review/update}" th:object="${reviewToEdit}" method="post" class="space-y-6">
+
+                    <!-- Hidden field to pass the review ID -->
+                    <input type="hidden" th:field="*{id}" />
+
+                    <!-- Star Rating Input  -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3">
+                            <svg class="w-5 h-5 inline mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                            </svg>
+                            Your Rating
+                        </label>
+                        <div class="flex space-x-3 justify-center p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl" id="starRatingContainer">
+                            <!-- Star 1 -->
+                            <div class="relative">
+                                <input type="radio" id="star-1" th:field="*{rating}" value="1" name="rating" class="sr-only star-input" required />
+                                <label for="star-1" class="cursor-pointer star-label block transform hover:scale-125 transition-transform duration-200" data-rating="1">
+                                    <svg class="w-12 h-12 text-gray-300 star-svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                    </svg>
+                                </label>
+                            </div>
+                            <!-- Star 2 to 5 are similar -->
+                            <div class="relative">
+                                <input type="radio" id="star-2" th:field="*{rating}" value="2" name="rating" class="sr-only star-input" />
+                                <label for="star-2" class="cursor-pointer star-label block transform hover:scale-125 transition-transform duration-200" data-rating="2">
+                                    <svg class="w-12 h-12 text-gray-300 star-svg" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <input type="radio" id="star-3" th:field="*{rating}" value="3" name="rating" class="sr-only star-input" />
+                                <label for="star-3" class="cursor-pointer star-label block transform hover:scale-125 transition-transform duration-200" data-rating="3">
+                                    <svg class="w-12 h-12 text-gray-300 star-svg" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <input type="radio" id="star-4" th:field="*{rating}" value="4" name="rating" class="sr-only star-input" />
+                                <label for="star-4" class="cursor-pointer star-label block transform hover:scale-125 transition-transform duration-200" data-rating="4">
+                                    <svg class="w-12 h-12 text-gray-300 star-svg" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <input type="radio" id="star-5" th:field="*{rating}" value="5" name="rating" class="sr-only star-input" />
+                                <label for="star-5" class="cursor-pointer star-label block transform hover:scale-125 transition-transform duration-200" data-rating="5">
+                                    <svg class="w-12 h-12 text-gray-300 star-svg" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-center">
+                            <span id="currentRating" class="text-sm font-semibold text-gray-700 bg-gray-100 px-4 py-2 rounded-full inline-block">Click a star to rate</span>
+                        </div>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Find the correct star rating container, it can have different IDs
+                                // Note: The ID should be on the container with the labels, so let's use a class selector
+                                const starContainer = document.querySelector('.justify-center.p-6');
+                                if (!starContainer) return;
+
+                                const starLabels = starContainer.querySelectorAll('.star-label');
+                                const ratingDisplayText = document.getElementById('currentRating');
+                                let currentSelectedRating = 0;
+
+                                function updateStarDisplay(rating) {
+                                    starLabels.forEach(label => {
+                                        const starSvg = label.querySelector('.star-svg');
+                                        const starValue = parseInt(label.getAttribute('data-rating'));
+                                        if (starSvg) {
+                                            if (starValue <= rating) {
+                                                starSvg.classList.remove('text-gray-300');
+                                                starSvg.classList.add('text-yellow-400');
+                                            } else {
+                                                starSvg.classList.remove('text-yellow-400');
+                                                starSvg.classList.add('text-gray-300');
+                                            }
+                                        }
+                                    });
+                                }
+
+                                function updateRatingText(rating) {
+                                    if(ratingDisplayText) {
+                                        if (rating > 0) {
+                                            const ratingTexts = { 1: '⭐ Poor', 2: '⭐⭐ Fair', 3: '⭐⭐⭐ Good', 4: '⭐⭐⭐⭐ Very Good', 5: '⭐⭐⭐⭐⭐ Excellent' };
+                                            ratingDisplayText.textContent = ratingTexts[rating] || (rating + ' star(s)');
+                                        } else {
+                                            ratingDisplayText.textContent = 'Click a star to rate';
+                                        }
+                                    }
+                                }
+
+                                starLabels.forEach(label => {
+                                    label.addEventListener('mouseenter', function() {
+                                        const hoverRating = parseInt(this.getAttribute('data-rating'));
+                                        updateStarDisplay(hoverRating);
+                                    });
+
+                                    label.addEventListener('click', function() {
+                                        const clickedRating = parseInt(this.getAttribute('data-rating'));
+                                        currentSelectedRating = clickedRating;
+                                        updateRatingText(currentSelectedRating);
+                                    });
+                                });
+
+                                starContainer.addEventListener('mouseleave', () => {
+                                    updateStarDisplay(currentSelectedRating);
+                                });
+
+                                const initiallyCheckedInput = starContainer.querySelector('.star-input:checked');
+                                if (initiallyCheckedInput) {
+                                    currentSelectedRating = parseInt(initiallyCheckedInput.value);
+                                    updateStarDisplay(currentSelectedRating);
+                                    updateRatingText(currentSelectedRating);
+                                }
+                            });
+                        </script>
+                    </div>
+                    <!-- Review Category Dropdown -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            <svg class="w-4 h-4 inline mr-1 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                            Review Category <span class="text-red-500">*</span>
+                        </label>
+                        <select th:field="*{category}"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-700 font-medium bg-gray-50"
+                                required>
+                            <option value="">-- Select what you're reviewing --</option>
+                            <option value="Hospital">Hospital Facilities</option>
+                            <option value="Staff Service">Staff Service</option>
+                            <option value="Vaccine">Vaccine Quality & Availability</option>
+                        </select>
+                        <p class="text-sm text-gray-500 mt-2">What aspect of our service are you reviewing?</p>
+                    </div>
+
+                    <!-- Comment Input -->
+                    <div>
+                        <label for="editComment" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                            Your Comments <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="editComment" th:field="*{comment}"
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                                  rows="5"
+                                  placeholder="Share your updated experience with us..."
+                                  required></textarea>
+                        <p class="text-sm text-gray-500 mt-2">Tell us more about your experience with our vaccination portal</p>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+                        <button type="submit"
+                                class="flex-1 inline-flex items-center justify-center px-8 py-4 text-white font-semibold rounded-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg"
+                                style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);"
+                                onmouseover="this.style.background='linear-gradient(135deg, #ea580c 0%, #dc2626 100%)'"
+                                onmouseout="this.style.background='linear-gradient(135deg, #f97316 0%, #ea580c 100%)'">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Save Changes
+                        </button>
+                        <a th:href="@{/review}"
+                           class="flex-1 inline-flex items-center justify-center px-8 py-4 text-gray-700 bg-gray-100 border border-gray-300 font-semibold rounded-xl hover:bg-gray-200 transition-all duration-300">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.star-svg {
+    transition: color 0.2s ease-in-out;
+}
+.star-svg.text-yellow-400 {
+    color: #fbbf24 !important;
+}
+.star-svg.text-gray-300 {
+    color: #fbbf24 !important;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Edit star rating script loaded');
+
+    // Wait a bit to ensure DOM is fully ready
+    setTimeout(function() {
+        const starLabels = document.querySelectorAll('#editStarRating .star-label');
+        const starInputs = document.querySelectorAll('#editStarRating .star-input');
+        const starRatingContainer = document.getElementById('editStarRating');
+
+        console.log('Found edit star labels:', starLabels.length);
+        console.log('Found edit star inputs:', starInputs.length);
+
+        if (starLabels.length === 0) {
+            console.error('No edit star labels found!');
+            return;
+        }
+
+        // Add click event listeners to star labels
+        starLabels.forEach(function(label, index) {
+            label.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const rating = parseInt(this.getAttribute('data-rating'));
+                const input = this.querySelector('.star-input');
+
+                console.log('Edit star clicked:', rating, 'stars');
+
+                // Uncheck all radio buttons first
+                starInputs.forEach(function(input) {
+                    input.checked = false;
+                });
+
+                // Check the selected radio button
+                if (input) {
+                    input.checked = true;
+                    console.log('Edit radio button checked for rating:', rating);
+                }
+
+                // Update visual state of all stars
+                updateEditStarDisplay(rating);
+
+                // Update rating display text
+                updateEditRatingDisplay(rating);
+
+                // Trigger change event for form validation
+                if (input) {
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+
+            // Add hover effect
+            label.addEventListener('mouseenter', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                updateEditStarDisplay(rating, true);
+            });
+        });
+
+        // Add mouse leave event to reset to selected rating
+        if (starRatingContainer) {
+            starRatingContainer.addEventListener('mouseleave', function() {
+                const checkedInput = document.querySelector('#editStarRating .star-input:checked');
+                if (checkedInput) {
+                    const rating = parseInt(checkedInput.value);
+                    updateEditStarDisplay(rating);
+                } else {
+                    updateEditStarDisplay(0);
+                }
+            });
+        }
+
+    function updateEditStarDisplay(rating, isHover = false) {
+        console.log('Updating edit star display for rating:', rating);
+
+        starLabels.forEach(function(label, index) {
+            const starSvg = label.querySelector('.star-svg');
+            const starRating = parseInt(label.getAttribute('data-rating'));
+
+            console.log('Edit star', starRating, 'should be', starRating <= rating ? 'filled' : 'empty');
+
+            if (starSvg) {
+                // Remove all color classes first
+                starSvg.classList.remove('text-gray-300', 'text-yellow-400');
+
+                if (starRating <= rating) {
+                    // Fill the star (and all stars before it)
+                    starSvg.classList.add('text-yellow-400');
+                    starSvg.style.color = '#fbbf24'; // Force yellow color
+                    console.log('Filling edit star', starRating);
+                } else {
+                    // Empty the star
+                    starSvg.classList.add('text-gray-300');
+                    starSvg.style.color = '#fbbf24'; // Force gray color
+                    console.log('Emptying edit star', starRating);
+                }
+            }
+        });
+    }
+
+        function updateEditRatingDisplay(rating) {
+            const ratingDisplay = document.getElementById('currentEditRating');
+            if (ratingDisplay) {
+                if (rating > 0) {
+                    ratingDisplay.textContent = 'Updated rating: ' + rating + ' star' + (rating > 1 ? 's' : '');
+                } else {
+                    ratingDisplay.textContent = 'Current rating displayed above';
+                }
+            }
+        }
+
+        // Initialize star display with current rating
+        const checkedInput = document.querySelector('#editStarRating .star-input:checked');
+        if (checkedInput) {
+            const currentRating = parseInt(checkedInput.value);
+            updateEditStarDisplay(currentRating);
+            updateEditRatingDisplay(currentRating);
+        } else {
+            updateEditStarDisplay(0);
+        }
+
+    }, 100);
+});
+</script>
+</body>
+</html>
