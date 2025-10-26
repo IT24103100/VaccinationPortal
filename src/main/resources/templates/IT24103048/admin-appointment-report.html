@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/admin-layout :: adminLayout(~{::title}, ~{::content})}">
+<head>
+    <title>Appointment Reports - VaxConnect Sri Lanka</title>
+</head>
+
+<body>
+<div th:fragment="content">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Appointment Reports & Analytics</h1>
+            <p class="text-gray-600">Track appointment statuses and popular locations from <strong th:text="${startDate}">start date</strong> to <strong th:text="${endDate}">end date</strong></p>
+        </div>
+        <a th:href="@{/admin/reports}" class="inline-flex items-center px-6 py-3 text-gray-700 bg-gray-100 border border-gray-300 font-semibold rounded-xl hover:bg-gray-200 transition-all duration-300">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back to Reports
+        </a>
+    </div>
+
+    <!-- Appointment Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Total Appointments -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm font-medium">Total Appointments</p>
+                    <p class="text-3xl font-bold text-blue-600" th:text="${#lists.size(report.appointmentStatusCounts) > 0 ? #aggregates.sum(report.appointmentStatusCounts.![1]) : 0}">0</p>
+                    <p class="text-sm text-gray-500">This period</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Types -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm font-medium">Status Types</p>
+                    <p class="text-3xl font-bold text-green-600" th:text="${#lists.size(report.appointmentStatusCounts)}">0</p>
+                    <p class="text-sm text-gray-500">Different statuses</p>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Hospitals -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm font-medium">Active Hospitals</p>
+                    <p class="text-3xl font-bold text-purple-600" th:text="${#lists.size(report.topHospitals)}">0</p>
+                    <p class="text-sm text-gray-500">With appointments</p>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Status Overview -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 mb-8">
+        <div class="p-6 border-b border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-800">Appointment Status Overview</h3>
+            <p class="text-gray-600 mt-1">Breakdown of appointments by status from <strong th:text="${startDate}">start date</strong> to <strong th:text="${endDate}">end date</strong></p>
+        </div>
+        <div class="p-6">
+            <div th:if="${#lists.isEmpty(report.appointmentStatusCounts)}" class="text-center py-12">
+                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <p class="text-gray-500 text-lg">No appointment status data available</p>
+                <p class="text-gray-400 text-sm">Appointment status data will appear here once appointments are created</p>
+            </div>
+            
+            <div th:if="${!#lists.isEmpty(report.appointmentStatusCounts)}" class="space-y-4">
+                <div th:each="statusData : ${report.appointmentStatusCounts}" class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-800" th:text="${statusData[0]}">Status Name</p>
+                            <p class="text-sm text-gray-500">Appointment Status</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-2xl font-bold text-gray-800" th:text="${statusData[1]}">0</p>
+                        <p class="text-sm text-gray-500">appointments</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Hospitals by Appointments -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200">
+        <div class="p-6 border-b border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-800">Top Hospitals by Appointment Count</h3>
+            <p class="text-gray-600 mt-1">Hospitals with the most appointments during this period</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hospital Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appointments</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Percentage</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr th:each="hospitalData, iterStat : ${report.topHospitals}" class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900" th:text="${hospitalData[0]}">Hospital Name</div>
+                                    <div class="text-sm text-gray-500">Medical Facility</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900" th:text="${hospitalData[1]}">0</div>
+                            <div class="text-sm text-gray-500">appointments</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900" th:text="${#lists.size(report.topHospitals) > 0 ? (#aggregates.sum(report.topHospitals.![1]) > 0 ? (#temporals.format(hospitalData[1] / #aggregates.sum(report.topHospitals.![1]) * 100, '##.#')) : '0') + '%' : '0%'}">0%</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span th:if="${iterStat.index == 0}" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                #1
+                            </span>
+                            <span th:if="${iterStat.index == 1}" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                #2
+                            </span>
+                            <span th:if="${iterStat.index == 2}" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                #3
+                            </span>
+                            <span th:if="${iterStat.index > 2}" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                #<span th:text="${iterStat.index + 1}">4</span>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(report.topHospitals)}">
+                        <td colspan="4" class="px-6 py-12 text-center">
+                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            <p class="text-gray-500 text-lg">No hospital appointment data available</p>
+                            <p class="text-gray-400 text-sm">Hospital appointment data will appear here once appointments are created</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

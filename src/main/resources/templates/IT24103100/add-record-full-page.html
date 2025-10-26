@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/nurse-layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <title>Add Vaccination Record</title>
+</head>
+<body>
+<div th:fragment="content">
+
+    <!-- Page Header: shows selected patient's identity -->
+    <header class="mb-10 text-center">
+        <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            Add Record for <span th:text="${patient.name}" class="text-primary-blue">Patient Name</span>
+        </h1>
+        <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500" th:text="'NIC: ' + ${patient.nic}"></p>
+    </header>
+
+    <!-- Add Record Card: full form to create a new record for the patient -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 md:p-10 animate-slide-in-left card-hover">
+        <form th:action="@{/nurse/save-record}" th:object="${vaccinationRecord}" method="post" class="space-y-8">
+            <!-- Hidden input for the patient's user ID (ties record to patient) -->
+            <input type="hidden" name="userId" th:value="${patient.id}" />
+
+            <div class="space-y-8">
+                <!-- Vaccine Details: choose vaccine and dose -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label for="vaccineName" class="block text-sm font-medium text-gray-700">Vaccine Name</label>
+                        <select id="vaccineName" th:field="*{vaccineName}" required
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-blue focus:border-primary-blue sm:text-sm">
+                            <option value="">-- Select a Vaccine --</option>
+                            <option th:each="vaccine : ${vaccines}"
+                                    th:value="${vaccine.vaccineName}"
+                                    th:text="${vaccine.vaccineName} + ' (Available: ' + ${vaccine.totalQuantity} + ')'"
+                                    th:disabled="${vaccine.totalQuantity == 0}">
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="dose" class="block text-sm font-medium text-gray-700">Dose</label>
+                        <select id="dose" th:field="*{dose}" required
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-blue focus:border-primary-blue sm:text-sm">
+                            <option value="">-- Select a Dose --</option>
+                            <option value="1st Dose">1st Dose</option>
+                            <option value="2nd Dose">2nd Dose</option>
+                            <option value="3rd Dose">3rd Dose</option>
+                            <option value="Booster">Booster</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Administration Details: date and nurse name -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label for="vaccinationDate" class="block text-sm font-medium text-gray-700">Vaccination Date</label>
+                        <input type="date" id="vaccinationDate" th:field="*{vaccinationDate}" required th:attr="max=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-blue focus:border-primary-blue sm:text-sm" />
+                        <p th:if="${#fields.hasErrors('vaccinationDate')}" class="text-red-500 text-sm mt-1" th:errors="*{vaccinationDate}"></p>
+                    </div>
+                    <div>
+                        <label for="administeredBy" class="block text-sm font-medium text-gray-700">Administered By</label>
+                        <input type="text" id="administeredBy" th:field="*{administeredBy}" required readonly
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm" />
+                    </div>
+                </div>
+
+                <!-- Standardized extra fields: optional metadata for tracking -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <label for="batchNumber" class="block text-sm font-medium text-gray-700">Batch / Lot Number</label>
+                        <input type="text" id="batchNumber" th:field="*{batchNumber}"
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-blue focus:border-primary-blue sm:text-sm" />
+                    </div>
+                    <div>
+                        <label for="administrationSite" class="block text-sm font-medium text-gray-700">Administration Site</label>
+                        <input type="text" id="administrationSite" th:field="*{administrationSite}" placeholder="Left Deltoid"
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-blue focus:border-primary-blue sm:text-sm" />
+                    </div>
+                    <div>
+                        <label for="notes" class="block text-sm font-medium text-gray-700">Notes (Internal)</label>
+                        <input type="text" id="notes" th:field="*{notes}" maxlength="500"
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-blue focus:border-primary-blue sm:text-sm" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions: cancel and submit -->
+            <div class="pt-6 flex justify-end space-x-4 border-t border-gray-200 mt-8">
+                <a th:href="@{/nurse/add-record}"
+                   class="px-6 py-3 rounded-lg border border-gray-300 bg-white text-gray-700 font-semibold hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-all">
+                    Cancel
+                </a>
+                <button type="submit"
+                        class="btn-gradient text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1 flex items-center">
+                    Save Record
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
